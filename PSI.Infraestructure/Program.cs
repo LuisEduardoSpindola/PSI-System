@@ -1,4 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using PSI.Infraestructure.Areas.Identity.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("IdentityPSIContextConnection") ?? throw new InvalidOperationException("Connection string 'IdentityPSIContextConnection' not found.");
+
+builder.Services.AddDbContext<IdentityPSIContext>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<PSIUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<IdentityPSIContext>();
+
 
 // Add services to the container.
 
@@ -17,6 +27,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapRazorPages();
 
 app.UseAuthorization();
 

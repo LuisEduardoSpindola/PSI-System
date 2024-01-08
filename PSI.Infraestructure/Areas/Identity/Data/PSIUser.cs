@@ -9,5 +9,8 @@ namespace PSI.Infraestructure.Areas.Identity.Data;
 // Add profile data for application users by adding properties to the PSIUser class
 public class PSIUser : IdentityUser
 {
+    public string NomeUsuario { get; set; }
+    public int PassCod{ get; set; }
+    public int Periodo { get; set; }
 }
 
