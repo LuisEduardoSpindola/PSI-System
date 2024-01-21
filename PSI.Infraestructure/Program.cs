@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using PSI.Application.Interface;
 using PSI.Infraestructure.Areas.Identity.Data;
+using PSI.Infraestructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,9 @@ builder.Services.AddDbContext<IdentityPSIContext>(options => options.UseSqlServe
 
 builder.Services.AddDefaultIdentity<PSIUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<IdentityPSIContext>();
 
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IRepositoryPost, RepositoryPost>();
 
 // Add services to the container.
 

@@ -1,22 +1,65 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PSI.Application.Interface;
+using PSI.Domain.Models;
 
-namespace PSI.Application.Controllers
+public class PostController : Controller
 {
-    public class PostController : Controller
+    private readonly IRepositoryPost _Post;
+
+    public PostController(IRepositoryPost Post)
     {
-        public IRepositoryPost Post { get; set; }
+        _Post = Post;
+    }
 
-        public PostController(IRepositoryPost _Post)
+    // GET: /Post/Create
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    // POST: /Post/Create
+    [HttpPost]
+    public IActionResult Create(Post post)
+    {
+        if (ModelState.IsValid)
         {
-            _Post = Post;
+            _Post.Create(post);
+            return RedirectToAction("Get");
         }
+        return View(post);
+    }
 
+    // GET: /Post/Get
+    public IActionResult Get()
+    {
+        var posts = _Post.Get();
+        return View(posts);
+    }
 
+    // GET: /Post/Update/5
+    public IActionResult Update(int Id)
+    {
+        var post = _Post.GetById(Id);
+        return View(post);
+    }
 
-        public IActionResult Get()
+    // POST: /Post/Update/5
+    [HttpPost]
+    public IActionResult Update(Post post)
+    {
+        if (ModelState.IsValid)
         {
-            return View();
+            _Post.Update(post);
+            return RedirectToAction("Get");
         }
+        return View(post);
+    }
+
+    // POST: /Post/Delete/5
+    [HttpPost]
+    public IActionResult Delete(Guid Id)
+    {
+        _Post.DeleteById(Id);
+        return RedirectToAction("Get");
     }
 }

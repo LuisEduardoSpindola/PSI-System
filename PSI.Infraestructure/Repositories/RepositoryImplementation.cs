@@ -11,18 +11,18 @@ namespace PSI.Infraestructure.Repositories
 
         public RepositoryImplementation(PSIContext _PSIContext) 
         {
-            _PSIContext = PSIContext;
+            PSIContext = _PSIContext;
         }
 
         public void Create(T entity)
         {
             PSIContext.Set<T>().Add(entity);
+            PSIContext.SaveChanges();
         }
 
-        public List<T> Get(T entity)
+        public List<T> Get()
         {
-            var result = PSIContext.Set<T>().ToList();
-            return result;
+            return PSIContext.Set<T>().ToList();
         }
 
         public T GetById(int Id)
@@ -41,7 +41,7 @@ namespace PSI.Infraestructure.Repositories
             PSIContext.Set<T>().Remove(entity);
         }
 
-        public void DeleteById(int Id)
+        public void DeleteById(Guid Id)
         {
             var result = PSIContext.Set<T>().Find(Id);
             PSIContext.Set<T>().Remove(result);
